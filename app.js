@@ -1,5 +1,7 @@
 const http = require('http');
-
+const fs = require('fs');
+const { on } = require('events');
+const { buffer } = require('stream/consumers');
 
 /* function rqListioner(req , res){
 
@@ -32,6 +34,25 @@ const server = http.createServer((req, res )=>{       //returns server thats why
     res.write('</html>');
     return res.end();
 }
+
+const method = req.method;
+const body = [];
+  if(url === '/message' && method === 'POST'){
+    // fs.writeFileSync('message.txt','Dummy');
+    req.on('data',(chunk)=>{
+      console.log('chunk');
+      body.push(chunk);
+
+    });
+    req.on('end',()=>{
+      const parsedBody = Buffer.concat(body).toString();
+      const message = parsedBody.split('=')[1];
+      fs.writeFileSync('message.txt',message);
+    })
+    // res.statusCode = 302;                    //# set status code
+    // res.setHeader('Location','/');
+    return res.end();
+  }
   res.setHeader('Content-Type','text/html');
   res.write('<html>');
   res.write('<head><title>Welcome to NodeJs</title>');
