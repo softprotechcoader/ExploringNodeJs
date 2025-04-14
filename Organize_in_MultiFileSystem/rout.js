@@ -26,7 +26,7 @@ const handler = requestHandler = (req, res) => {      // this is es6 style funct
         });
         req.on('end',()=>{                   //Event Listener
           const parsedBody = Buffer.concat(body).toString();
-          const message = parsedBody.split('=')[1];
+          const message = parsedBody.split('=')[0];
           // fs.writeFileSync('message.txt',message , error => {    //here we are using error first callback its a convention and another event listener
           fs.writeFile('message.txt',message , error => {    //here we are using error first callback its a convention and another event listener
                   /* 
