@@ -2,6 +2,7 @@ const http = require('http');
 const fs = require('fs');
 const { on } = require('events');
 const { buffer } = require('stream/consumers');
+const { error } = require('console');
 
 /* function rqListioner(req , res){
 
@@ -44,14 +45,24 @@ const body = [];
       body.push(chunk);
 
     });
-    req.on('end',()=>{
+    req.on('end',()=>{                   //Event Listener
       const parsedBody = Buffer.concat(body).toString();
       const message = parsedBody.split('=')[1];
-      fs.writeFileSync('message.txt',message);
-    })
+      // fs.writeFileSync('message.txt',message , error => {    //here we are using error first callback its a convention and another event listener
+      fs.writeFile('message.txt',message , error => {    //here we are using error first callback its a convention and another event listener
+              /* 
+                writeFileSync blocks the event loop and it will not allow any other code to run
+                writeFile is non blocking and it will not block the event loop and it will allow other code to run
+                and it will run the callback function when the file is written
+              */
+        res.statusCode = 302;                   
+        res.setHeader('Location','/');
+        return res.end();
+      });
+    });
     // res.statusCode = 302;                    //# set status code
     // res.setHeader('Location','/');
-    return res.end();
+    // return res.end();
   }
   res.setHeader('Content-Type','text/html');
   res.write('<html>');
