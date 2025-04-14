@@ -20,13 +20,13 @@ const handler = requestHandler = (req, res) => {      // this is es6 style funct
       if(url === '/message' && method === 'POST'){
         // fs.writeFileSync('message.txt','Dummy');
         req.on('data',(chunk)=>{
-          console.log('chunk');
+          console.log(chunk);
           body.push(chunk);
     
         });
         req.on('end',()=>{                   //Event Listener
           const parsedBody = Buffer.concat(body).toString();
-          const message = parsedBody.split('=')[0];
+          const message = parsedBody.split('=')[1];
           // fs.writeFileSync('message.txt',message , error => {    //here we are using error first callback its a convention and another event listener
           fs.writeFile('message.txt',message , error => {    //here we are using error first callback its a convention and another event listener
                   /* 
