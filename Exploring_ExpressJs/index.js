@@ -6,16 +6,29 @@ const express = require('express'); // import express module
 const app = express(); // create an instance of express
 
 // app.use(); // use middleware to parse incoming requests 
-app.use((req, res, next)=>{
-console.log('Middleware 1');
-next(); // call the next middleware in the stack
+
+//*** Dummy MuddleWare No use Right now  ***
+
+// app.use((req, res, next)=>{
+// console.log('Middleware 1');
+// next(); // call the next middleware in the stack
+// });
+
+app.use('/',(req, res, next)=>{
+    console.log("This always runs");
+    next(); // call the next middleware in the stack
 });
 
-app.use((req, res, next)=>{
-console.log('Middleware 2');   
-res.send('Hello Welcome to ExpressJs'); // send response to the client 
-// next(); // call the next middleware in the stack
+app.use('/add-products',(req, res, next)=>{
+console.log('Middleware 1');   
+res.send('Add-Products'); // send response to the client 
+
 });
+app.use('/',(req, res, next)=>{
+    console.log('Middleware 2');   
+    res.send('Hello Welcome to ExpressJs'); // send response to the client 
+    
+    });
 
 /*
 const server = http.createServer(app); // create a server using express app
