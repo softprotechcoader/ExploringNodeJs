@@ -2,8 +2,13 @@
 
 // *** When using app.listen() method, we don't need to use http module to create a server. ***
 const express = require('express'); // import express module
+const path = require('path'); // import path module
+const bodyParser = require('body-parser'); // import body-parser module
 
 const app = express(); // create an instance of express
+app.use(bodyParser.urlencoded({extended : false})); // this is registration of middleware to parse incoming requests
+
+
 
 // app.use(); // use middleware to parse incoming requests 
 
@@ -21,9 +26,23 @@ app.use('/',(req, res, next)=>{
 
 app.use('/add-products',(req, res, next)=>{
 console.log('Middleware 1');   
-res.send('Add-Products'); // send response to the client 
+// res.send('Add-Products'); // send response to the client 
+res.sendFile(path.join(__dirname,"./views/appProducts.html")); // send add-products.html file
 
 });
+/* 
+Here we can use app.get or app.post or app.put or app.delete or app.patch and perform the action
+*/
+
+/* app.use('/products',(req, res, next)=>{
+    console.log (req.body); // log the request body to the console  to use this need to use body-parser middleware
+    res.redirect('/'); // redirect to home page
+}) */
+app.post('/products',(req, res, next)=>{
+    console.log (req.body); // log the request body to the console  to use this need to use body-parser middleware
+    res.redirect('/'); // redirect to home page
+})
+
 app.use('/',(req, res, next)=>{
     console.log('Middleware 2');   
     res.send('Hello Welcome to ExpressJs'); // send response to the client 
